@@ -26,13 +26,19 @@ import (
 // @Router /users/{id}/sugar [get]
 // @Security Bearer
 func GetSugarIntakeByUserId(c *gin.Context) {
+	userId := c.Param("id")
+	var si []models.SugarIntake
+
 	var u models.User
-	if err := models.DB.Where("id = ?", c.Param("id")).Preload("SugarIntakeList").First(&u).Error; err != nil {
+
+	if err := models.DB.Where("id = ?", c.Param("id")).First(&u).Error; err != nil {
 		c.JSON(http.StatusNotFound, payload.ErrorResponse{Error: "User not found"})
 		return
 	}
 
-	c.JSON(http.StatusOK, Map(u.SugarIntakeList, payload.MapSugarIntakeResponse))
+	models.DB.Where("user_id = ?", userId).Order("time DESC").Find(&si)
+
+	c.JSON(http.StatusOK, Map(si, payload.MapSugarIntakeResponse))
 }
 
 // POST /users/:id/sugar

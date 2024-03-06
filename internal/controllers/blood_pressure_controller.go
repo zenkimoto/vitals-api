@@ -31,8 +31,6 @@ func GetBloodPressureByUserId(c *gin.Context) {
 
 	var u models.User
 
-	// TODO: Try using a JOIN
-
 	if err := models.DB.Where("id = ?", c.Param("id")).First(&u).Error; err != nil {
 		c.JSON(http.StatusNotFound, payload.ErrorResponse{Error: "User not found"})
 		return

@@ -26,13 +26,19 @@ import (
 // @Router /users/{id}/weight [get]
 // @Security Bearer
 func GetWeightByUserId(c *gin.Context) {
+	userId := c.Param("id")
+	var w []models.Weight
+
 	var u models.User
-	if err := models.DB.Where("id = ?", c.Param("id")).Preload("WeightList").First(&u).Error; err != nil {
+
+	if err := models.DB.Where("id = ?", c.Param("id")).First(&u).Error; err != nil {
 		c.JSON(http.StatusNotFound, payload.ErrorResponse{Error: "User not found"})
 		return
 	}
 
-	c.JSON(http.StatusOK, Map(u.WeightList, payload.MapWeightResponse))
+	models.DB.Where("user_id = ?", userId).Order("time DESC").Find(&w)
+
+	c.JSON(http.StatusOK, Map(w, payload.MapWeightResponse))
 }
 
 // POST /users/:id/weight

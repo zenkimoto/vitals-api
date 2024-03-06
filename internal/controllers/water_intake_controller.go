@@ -26,13 +26,19 @@ import (
 // @Router /users/{id}/water [get]
 // @Security Bearer
 func GetWaterIntakeByUserId(c *gin.Context) {
+	userId := c.Param("id")
+	var wi []models.WaterIntake
+
 	var u models.User
-	if err := models.DB.Where("id = ?", c.Param("id")).Preload("WaterIntakeList").First(&u).Error; err != nil {
+
+	if err := models.DB.Where("id = ?", c.Param("id")).First(&u).Error; err != nil {
 		c.JSON(http.StatusNotFound, payload.ErrorResponse{Error: "User not found"})
 		return
 	}
 
-	c.JSON(http.StatusOK, Map(u.WaterIntakeList, payload.MapWaterIntakeResponse))
+	models.DB.Where("user_id = ?", userId).Order("time DESC").Find(&wi)
+
+	c.JSON(http.StatusOK, Map(wi, payload.MapWaterIntakeResponse))
 }
 
 // POST /users/:id/water
