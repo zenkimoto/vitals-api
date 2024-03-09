@@ -132,6 +132,8 @@ func PutWeightByUserId(c *gin.Context) {
 
 	// Update Weight
 	w.Weight = req.Weight
+	w.Time = req.Time
+
 	models.DB.Save(&w)
 
 	c.JSON(http.StatusOK, payload.MapWeightResponse(w))

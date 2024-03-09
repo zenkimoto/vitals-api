@@ -132,6 +132,8 @@ func PutWaterIntakeByUserId(c *gin.Context) {
 
 	// Update Water Intake Record
 	wi.Cups = r.Cups
+	wi.Time = r.Time
+
 	models.DB.Save(&wi)
 
 	c.JSON(http.StatusOK, payload.MapWaterIntakeResponse(wi))

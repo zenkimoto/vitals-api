@@ -132,6 +132,8 @@ func PutSugarIntakeByUserId(c *gin.Context) {
 
 	// Update Sugar Intake Record
 	si.Grams = r.Grams
+	si.Time = r.Time
+
 	models.DB.Save(&si)
 
 	c.JSON(http.StatusOK, payload.MapSugarIntakeResponse(si))

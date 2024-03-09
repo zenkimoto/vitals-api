@@ -133,6 +133,8 @@ func PutBloodPressureByUserId(c *gin.Context) {
 	// Update Blood Pressure
 	bp.Sys = r.Sys
 	bp.Dia = r.Dia
+	bp.Time = r.Time
+
 	models.DB.Save(&bp)
 
 	c.JSON(http.StatusOK, payload.MapBloodPressureResponse(bp))
