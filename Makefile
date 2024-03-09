@@ -9,6 +9,9 @@ run-build: build
 run: swagger
 	@go run main.go
 
+test:
+	@go test -v ./...
+
 lint:
     # Install golangci-lint from here: https://golangci-lint.run/usage/install/#macos
 	@golangci-lint run
