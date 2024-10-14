@@ -47,7 +47,7 @@ func Login(c *gin.Context) {
 	// Validate bcrypt password hash
 	if !util.VerifyPassword(request.Password, user.PasswordHash) {
 		log.Print("bcrypt hash does not match.")
-		c.JSON(http.StatusBadRequest, payload.ErrorResponse{Error: "Invalid username and/or password"})
+		c.JSON(http.StatusUnauthorized, payload.ErrorResponse{Error: "Invalid username and/or password"})
 		return
 	}
 
