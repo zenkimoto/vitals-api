@@ -25,7 +25,7 @@ import (
 // @Accept json
 // @Produce json
 // @Param user body payload.AuthRequest true "User Credentials Request"
-// @Success 200 {object} payload.TokenResponse
+// @Success 200 {object} payload.AuthResponse
 // @Failure 400 {object} payload.ErrorResponse
 // @Router /auth [post]
 func Login(c *gin.Context) {
@@ -58,7 +58,7 @@ func Login(c *gin.Context) {
 		c.JSON(http.StatusInternalServerError, payload.ErrorResponse{Error: "Internal Server Error"})
 	}
 
-	c.JSON(http.StatusOK, payload.TokenResponse{Token: jwt})
+	c.JSON(http.StatusOK, payload.AuthResponse{Token: jwt, UserId: user.ID})
 }
 
 // Issues a JSON Web Token.  The token is signed with the JWT key (set
@@ -150,5 +150,5 @@ func RefreshToken(c *gin.Context) {
 		c.JSON(http.StatusInternalServerError, payload.ErrorResponse{Error: "Internal Server Error"})
 	}
 
-	c.JSON(http.StatusOK, payload.TokenResponse{Token: jwt})
+	c.JSON(http.StatusOK, payload.AuthResponse{Token: jwt})
 }
